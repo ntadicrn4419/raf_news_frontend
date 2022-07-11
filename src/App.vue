@@ -1,28 +1,35 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="container">
+    <Navbar/>
+    <NavbarCms v-if="isLoggedIn"/>
+
+    <div class="container">
+      <router-view/>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Navbar from "./components/Navbar";
+import NavbarCms from "./components/NavbarCms";
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
+  components: {Navbar, NavbarCms},
+  computed: {
+    isLoggedIn() {
+      let jwt = localStorage.getItem("jwt");
+      if(jwt == null){
+        return false;
+      }
+      return true;
+    }
+  },
+  created () {
+    this.$bus.$on('logged', () => {
+      this.$router.go();
+    })
   }
 }
-</script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+
+</script>
