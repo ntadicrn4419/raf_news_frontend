@@ -18,7 +18,7 @@ export default {
     this.$axios.get(`/api/categories/${this.$route.params.name}`).then((response) => {
       this.category = response.data;
     });
-  },
+  }
 }
 </script>
 

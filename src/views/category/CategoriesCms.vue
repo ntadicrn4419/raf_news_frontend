@@ -12,7 +12,7 @@
           </thead>
           <tbody>
           <tr v-for="category in categories" :key="category.id">
-            <td><a @click="goToSingleCategoryPage(category.name)">{{category.name}}</a></td>
+            <td @click.prevent="goToSingleCategoryPage(category.name)"><a href="#">{{category.name}}</a></td>
             <td>{{ category.description | shortText }}</td>
             <td>  <button @click="goToEditCategoryPage(category.name)">Edit</button> </td>
             <td>  <button @click="deleteCategory(category.name)">Delete</button> </td>
@@ -43,7 +43,8 @@ export default {
   },
   methods: {
     goToAddCategoryPage(){
-      this.$router.push('/add-category-cms');
+      //this.$router.push('/add-category-cms');
+      this.$router.push({name:'AddCategoryCms', params: {categories: this.categories}});
     },
     goToEditCategoryPage(name){
       this.$router.push({name:'EditCategoryCms', params: {name: name}});
@@ -52,15 +53,16 @@ export default {
       this.$router.push({name: 'SingleCategoryCms', params: {name: name}});
     },
     deleteCategory(name){
+      this.$axios.get(`/api/news/${name}`).then((response) => {
+        let newsFromThisCategory = response.data;
+        if(newsFromThisCategory.length > 0){
+          alert("You can't delete this category because it is not empty!");
+        }
+      });
 
-      const question = window.confirm('Do you really want to delete this category and all news in it?')
-      if (!question) {
-        return
-      }
-
-      this.$axios.delete('/api/categories/'+name).then((response) => {
+      this.$axios.delete(`/api/categories/${name}`).then((response) => {
         this.categories = response.data;
-        this.$router.go()
+        this.$router.go();
       });
     }
   },

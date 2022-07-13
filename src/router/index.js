@@ -14,7 +14,13 @@ import AddUserCms from "@/views/user/AddUserCms";
 import EditUserCms from "@/views/user/EditUserCms";
 import SingleCategory from "@/views/category/SingleCategory";
 import SingleNews from "@/views/news/SingleNews";
+import SimilarNewsByTag from "@/views/news/SimilarNewsByTag";
 
+
+VueRouter.prototype.open = function (routeObject) {
+  const {href} = this.resolve(routeObject)
+  window.open(href, '_blank')
+}
 
 Vue.use(VueRouter)
 
@@ -107,6 +113,14 @@ const routes = [
     path: '/news/:id',
     name: 'SingleNews',
     component: SingleNews,
+    meta: {
+      authRequired: false,
+    }
+  },
+  {
+    path: '/similiar-news/:keyword',
+    name: 'SimilarNewsByTag',
+    component: SimilarNewsByTag,
     meta: {
       authRequired: false,
     }

@@ -4,7 +4,7 @@
     <form @submit.prevent="editNews(news.id)">
       <div class="form-group">
         <label for="title">Title</label>
-        <input v-model="title" type="text" class="form-control" id="title" placeholder="Enter title">
+        <input v-model="title" v-text="title" type="text" class="form-control" id="title" placeholder="Enter title">
       </div>
       <div class="form-group">
         <label>Category</label>
@@ -15,7 +15,7 @@
       </div>
       <div class="form-group">
         <label for="tags">Tags</label>
-        <input v-model="tags" type="text" class="form-control" id="tags" placeholder="Enter tags">
+        <input v-model="tags" type="text" class="form-control" id="tags" placeholder="Enter keywords separated by ','">
       </div>
       <div class="form-group">
         <label>Text</label>
@@ -41,15 +41,22 @@ export default {
   data() {
     return {
       categories: [],
-      title: this.news.title,
-      category: this.news.category,
-      tags: this.news.tags,
-      text: this.news.text
+      // title: this.news.title,
+      // category: this.news.category,
+      // tags: this.news.tags,
+      // text: this.news.text
+      title: '',
+      category: '',
+      tags: '',
+      text: ''
     }
   },
 
   methods: {
     editNews(id){
+      if(!this.validateInput()){
+        return;
+      }
       this.$axios.put(`/api/news/${id}`, {
         title: this.title,
         category: this.category.toString(),
@@ -60,6 +67,21 @@ export default {
       }).catch(response =>{
         console.log(response)
       })
+    },
+    validateInput(){
+      if(this.title === null || this.title === ""){
+        alert("Failed. Title can't be empty.");
+        return false;
+      }
+      if(this.category === null || this.category.toString() === ""){
+        alert("Failed. Category can't be empty.");
+        return false;
+      }
+      if(this.text === null || this.text === ""){
+        alert("Failed. Text can't be empty.");
+        return false;
+      }
+      return true;
     }
   },
 

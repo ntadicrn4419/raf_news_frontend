@@ -5,32 +5,16 @@
     </div>
     <div class="row">
       <div class="col-12">
-<!--        <table class="table">-->
-<!--          <thead>-->
-<!--          <tr>-->
-<!--            <th scope="col">Title</th>-->
-<!--            <th scope="col">Text</th>-->
-<!--            <th scope="col">Date created</th>-->
-<!--          </tr>-->
-<!--          </thead>-->
-<!--          <tbody>-->
-<!--          <tr v-for="singleNews in news" :key="singleNews.id">-->
-<!--            <td>{{ singleNews.title }}</td>-->
-<!--            <td>{{ singleNews.text | shortText }}</td>-->
-<!--            <td>{{ singleNews.dateCreated }}</td>-->
-<!--          </tr>-->
-<!--          </tbody>-->
-<!--        </table>-->
         <b-card
             v-for="singleNews in news" :key="singleNews.id"
             :title="singleNews.title"
             tag="article"
             style="max-width: 30rem;"
             class="mb-2"
-            @click="goToSingleNewsPage(singleNews.id)"
+            @click.prevent="goToSingleNewsPage(singleNews.id)"
         >
           <b-card-text>
-            {{ singleNews.text | shortText }}
+            <a href="#">{{ singleNews.text | shortText }}</a>
           </b-card-text>
           <b-card-footer>{{singleNews.dateCreated}}</b-card-footer>
         </b-card>

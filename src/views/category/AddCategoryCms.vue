@@ -19,12 +19,25 @@ export default {
   name: "AddCategoryCms.vue",
   data() {
     return {
+      categories: [],
       name: '',
       description: '',
     }
   },
   methods: {
     addNewCategory() {
+
+      if(!this.validateInput()){
+        return;
+      }
+
+      for(let i = 0; i < this.categories.length; i++){
+        if(this.categories[i].name === this.name){
+          alert("Failed. Category with that name already exists!");
+          return;
+        }
+      }
+
       this.$axios.post('/api/categories', {
         name: this.name,
         description: this.description,
@@ -34,8 +47,22 @@ export default {
       }).catch(response =>{
           console.log(response)
       })
+    },
+    validateInput(){
+      if(this.name === null || this.name === ""){
+        alert("Failed. Name can't be empty.");
+        return false;
+      }
+      if(this.description === null || this.description === ""){
+        alert("Failed. Description can't be empty.");
+        return false;
+      }
+      return true;
     }
   },
+  created() {
+    this.categories = this.$route.params.categories;
+  }
 }
 </script>
 

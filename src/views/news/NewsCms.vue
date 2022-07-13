@@ -24,8 +24,8 @@
           </thead>
           <tbody>
           <tr v-for="singleNews in news" :key="singleNews.id">
-            <td>{{ singleNews.title }}</td>
-            <td>{{ singleNews.author.firstname }} {{singleNews.author.lastname}} - {{singleNews.author.email}}</td>
+            <td @click.prevent="goToSingleNewsPage(singleNews.id)"><a href="#">{{ singleNews.title }}</a></td>
+            <td>{{singleNews.authorEmail}}</td>
             <td>{{singleNews.dateCreated}}</td>
             <td>  <button @click="goToEditNewsPage(singleNews.id)">Edit</button> </td>
             <td>  <button @click="deleteNews(singleNews.id)">Delete</button> </td>
@@ -39,7 +39,6 @@
 </template>
 
 <script>
-import news from "@/views/news/News";
 
 export default {
   name: "NewsCms",
@@ -70,6 +69,10 @@ export default {
     },
     goToEditNewsPage(id){
       this.$router.push({name:'EditNewsCms', params: {id: id}});
+    },
+    goToSingleNewsPage(id){
+      //this.$router.push({name:'SingleNews', params: {id: id}});
+      this.$router.open({name:'SingleNews', params: {id: id}});
     },
     deleteNews(id){
       const question = window.confirm('Do you really want to delete this news?')

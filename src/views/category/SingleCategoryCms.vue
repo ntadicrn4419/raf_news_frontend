@@ -15,7 +15,7 @@
           </thead>
           <tbody>
           <tr v-for="singleNews in news" :key="singleNews.id">
-            <td>{{ singleNews.title }}</td>
+            <td @click="goToSingleNewsPage(singleNews.id)"><a href="#">{{ singleNews.title }}</a></td>
             <td>{{ singleNews.text | shortText }}</td>
             <td>{{ singleNews.dateCreated }}</td>
           </tr>
@@ -59,6 +59,12 @@ export default {
           (objA, objB) => Number(Date.parse(objB.dateCreated)) - Number(Date.parse(objA.dateCreated)),
       );
     });
+  },
+  methods:{
+    goToSingleNewsPage(id){
+      //this.$router.push({name:'SingleNews', params: {id: id}});
+      this.$router.open({name:'SingleNews', params: {id: id}});
+    }
   }
 }
 </script>

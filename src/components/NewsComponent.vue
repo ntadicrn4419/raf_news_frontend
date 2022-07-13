@@ -2,6 +2,15 @@
   <div>
     <h1>{{ singleNews.title }}</h1>
     <h5 v-if="singleNews.author">{{ singleNews.author.firstname }} {{singleNews.author.lastname}} - {{ singleNews.author.email }}, {{singleNews.dateCreated}}</h5>
+
+    <ul>
+      <li v-for="tag in singleNews.tagList" :key="tag.id">
+        <ul>
+          <li v-for="keyword in tag.keyWords" :key="keyword" @click.prevent="findNewsByTag(keyword)"><a href="#">{{ keyword }}</a></li>
+        </ul>
+      </li>
+    </ul>
+
     <b-textarea id="newsText" readonly :value="singleNews.text"></b-textarea>
     <h3>Comments</h3>
     <b-card
@@ -58,6 +67,9 @@ export default {
       }).then((response) => {
         this.$router.go();
       });
+    },
+    findNewsByTag(keyword){
+      this.$router.push({name: 'SimilarNewsByTag', params: {keyword: keyword}});
     }
   }
 }

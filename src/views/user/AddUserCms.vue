@@ -40,6 +40,7 @@ export default {
   name: "AddUserCms",
   data() {
     return {
+      users:[],
       firstname: '',
       lastname: '',
       email: '',
@@ -51,11 +52,21 @@ export default {
   methods: {
     addNewUser(){
 
+      if(!this.validateInput()){
+        return;
+      }
+
+      for(let i = 0; i < this.users.length; i++){
+        if(this.users[i].email === this.email){
+          alert("Failed. User with that email already exists!");
+          return;
+        }
+      }
+
       if(this.password.toString() !== this.passwordAgain.toString()){
         alert("Password and password again don't match!");
         return;
       }
-
       this.$axios.post('/api/users', {
         firstname: this.firstname,
         lastname: this.lastname,
@@ -68,7 +79,33 @@ export default {
       }).catch(response =>{
         console.log(response)
       })
+    },
+    validateInput(){
+      if(this.firstname === null || this.firstname === ""){
+        alert("Failed. Firstname can't be empty.");
+        return false;
+      }
+      if(this.lastname === null || this.lastname === ""){
+        alert("Failed. Lastname can't be empty.");
+        return false;
+      }
+      if(this.email === null || this.email === ""){
+        alert("Failed. Email can't be empty.");
+        return false;
+      }
+      if(this.type === null || this.type.toString() === ""){
+        alert("Failed. Type can't be empty.");
+        return false;
+      }
+      if(this.password === null || this.password === ""){
+        alert("Failed. Password can't be empty.");
+        return false;
+      }
+      return true;
     }
+  },
+  created() {
+    this.users = this.$route.params.users;
   }
 }
 </script>

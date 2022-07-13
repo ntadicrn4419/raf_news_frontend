@@ -44,7 +44,8 @@ export default {
   },
   methods: {
     goToAddUserPage(){
-      this.$router.push('/add-user-cms');
+      //this.$router.push('/add-user-cms');
+      this.$router.push({name:'AddUserCms', params: {users: this.users}});
     },
     goToEditUserPage(email){
       this.$router.push({name:'EditUserCms', params: {email: email}});
